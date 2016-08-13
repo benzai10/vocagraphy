@@ -36,6 +36,7 @@ defmodule Vocagraphy.Web do
 
       import Vocagraphy.Router.Helpers
       import Vocagraphy.Gettext
+      import Vocagraphy.Auth, only: [authenticate_user: 2]
     end
   end
 
@@ -58,6 +59,8 @@ defmodule Vocagraphy.Web do
   def router do
     quote do
       use Phoenix.Router
+
+      import Vocagraphy.Auth, only: [authenticate_user: 2]
     end
   end
 

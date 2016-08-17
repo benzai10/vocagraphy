@@ -26,4 +26,8 @@ defmodule Vocagraphy.Router do
   # scope "/api", Vocagraphy do
   #   pipe_through :api
   # end
+  scope "/manage", Vocagraphy do
+    pipe_through [:browser, :authenticate_user]
+    resources "/videos", VideoController
+  end
 end

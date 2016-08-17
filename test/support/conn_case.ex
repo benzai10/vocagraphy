@@ -26,6 +26,7 @@ defmodule Vocagraphy.ConnCase do
       import Ecto.Query, only: [from: 1, from: 2]
 
       import Vocagraphy.Router.Helpers
+      import Vocagraphy.TestHelpers
 
       # The default endpoint for testing
       @endpoint Vocagraphy.Endpoint

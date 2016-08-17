@@ -7,6 +7,7 @@ defmodule Vocagraphy.User do
 		field :password, :string, virtual: true
 		field :password_hash, :string
     has_many :videos, Vocagraphy.Video
+    has_many :annotations, Vocagraphy.Annotation
 
 		timestamps
 	end

@@ -10,9 +10,9 @@ defmodule Vocagraphy.Auth do
 
     cond do
       user = conn.assigns[:current_user] ->
-        conn
+        put_current_user(conn, user)
       user = user_id && repo.get(Vocagraphy.User, user_id) ->
-        assign(conn, :current_user, user)
+        put_current_user(conn, user)
       true ->
         assign(conn, :current_user, nil)
     end
@@ -30,7 +30,6 @@ defmodule Vocagraphy.Auth do
 
     conn
     |> assign(:current_user, user)
-
     |> assign(:user_token, token)
   end
 

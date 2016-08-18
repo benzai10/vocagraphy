@@ -41,7 +41,8 @@ form.link, form.button {
 /* Customize container */
 @media (min-width: 768px) {
   .container {
-    max-width: 730px;
+    /* max-width: 730px; */
+    max-width: 1200px;
   }
 }
 .container-narrow > hr {
@@ -50,6 +51,8 @@ form.link, form.button {
 
 /* Main marketing message */
 .jumbotron {
+  padding-top: 10px;
+  padding-bottom: 10px;
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
 }

@@ -4,6 +4,7 @@
   <thead>
     <tr>
       <th>User</th>
+      <th>Img</th>
       <th>Url</th>
       <th>Title</th>
       <th>Description</th>
@@ -15,6 +16,7 @@
 <%= for video <- @videos do %>
     <tr>
       <td><%= video.user_id %></td>
+      <td><img src="http://img.youtube.com/vi/<%="#{Vocagraphy.WatchView.player_id(video)}" %>/0.jpg" height="45" width="60"></td>
       <td><%= video.url %></td>
       <td><%= video.title %></td>
       <td><%= video.description %></td>

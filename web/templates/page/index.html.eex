@@ -2,3 +2,8 @@
   <h2><%= gettext "Welcome to %{name}", name: "Vocagraphy!" %></h2>
   <p class="lead">Enjoy a new way to disover<br />and learn [Korean] vocabulary</p>
 </div>
+<div class="row">
+  <%= render "videos.html", videos: @videos %>
+  <%= render "annotations.html", annotations: @annotations %>
+</div>
+

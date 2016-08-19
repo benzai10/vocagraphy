@@ -17,8 +17,8 @@ defmodule Vocagraphy.VideoControllerTest do
 
   @tag login_as: "max"
   test "lists all user's videos on index", %{conn: conn, user: user} do
-    user_video = insert_video(user, title: "funny cats")
-    other_video = insert_video(insert_user(username: "other"), title: "another video")
+    user_video = insert_video(user, title: "funny cats", url: "http://youtube.com/watch?v=1234")
+    other_video = insert_video(insert_user(username: "other"), title: "another video", url: "http://youtube.com/watch?v=1234")
 
     conn = get conn, video_path(conn, :index)
     assert html_response(conn, 200) =~ ~r/Listing videos/

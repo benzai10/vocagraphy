@@ -3,8 +3,8 @@ defmodule Vocagraphy.VideoViewTest do
   import Phoenix.View
 
   test "renders index.html", %{conn: conn} do
-    videos = [%Vocagraphy.Video{id: "1", title: "dogs"},
-              %Vocagraphy.Video{id: "2", title: "cats"}]
+    videos = [%Vocagraphy.Video{id: "1", title: "dogs", url: "http://youtube.com/watch?v=1234"},
+              %Vocagraphy.Video{id: "2", title: "cats", url: "http://youtube.com/watch?v=1234"}]
     content = render_to_string(Vocagraphy.VideoView, "index.html", conn: conn, videos: videos)
 
     assert String.contains?(content, "Listing videos")

@@ -14,7 +14,7 @@ defmodule Vocagraphy.Video do
     timestamps
   end
 
-  @required_fields ~w(url title)
+  @required_fields ~w(url title category_id)
   @optional_fields ~w(description)
 
   @doc """

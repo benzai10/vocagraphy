@@ -8,7 +8,7 @@
       <div class="media-body">
         <h4 class="media-heading">
           <%= link "#{video.title}",
-              to: watch_path(Vocagraphy.Endpoint, :show, video.id) %>
+              to: watch_path(Vocagraphy.Endpoint, :show, video.id, start_at: 0) %>
         </h4>
         <p><%= video.description %></p>
       </div>

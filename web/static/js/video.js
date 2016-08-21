@@ -17,6 +17,8 @@ let Video = {
     let postButton   = document.getElementById("msg-submit")
     let vidChannel   = socket.channel("videos:" + videoId)
 
+    let popContainer = document.getElementById("pop-container")
+
     postButton.addEventListener("click", e => {
       let payload = {body: msgInput.value, at: Player.getCurrentTime()}
       vidChannel.push("new_annotation", payload)
@@ -33,16 +35,27 @@ let Video = {
       Player.seekTo(seconds)
     })
 
+    popContainer.addEventListener("click", e => {
+      e.preventDefault()
+      let seconds = e.target.getAttribute("data-seek") ||
+                    e.target.parentNode.getAttribute("data-seek")
+      if(!seconds){ return }
+
+      Player.seekTo(seconds)
+    })
+
     vidChannel.on("new_annotation", (resp) => {
       vidChannel.params.last_seen_id = resp.id
       this.renderAnnotation(msgContainer, resp)
+      this.renderPopAnnotation(popContainer, resp)
     })
 
     vidChannel.join()
       .receive("ok", resp => {
         let ids = resp.annotations.map(ann => ann.id)
+        resp.annotations.forEach( ann => this.renderAnnotation(msgContainer, ann) )
         if(ids.length > 0){ vidChannel.params.last_seen_id = Math.max(...ids) }
-        this.scheduleMessages(msgContainer, resp.annotations)
+        this.schedulePopMessages(popContainer, resp.annotations, null)
       })
       .receive("error", reason => console.log("join failed", reason) )
   },
@@ -59,11 +72,40 @@ let Video = {
     msgContainer.scrollTop = msgContainer.scrollHeight
   },
 
+  renderPopAnnotation(popContainer, {user, body, at}){
+    if (popContainer.hasChildNodes()) {
+      popContainer.removeChild(popContainer.childNodes[0])
+    }
+    let template = document.createElement("div")
+    template.innerHTML = `
+    <a href="#" data-seek="${this.esc(at)}">
+      [${this.formatTime(at)}]
+      <b>${this.esc(user.username)}</b>: ${this.esc(body)}
+    </a>
+    `
+    popContainer.appendChild(template)
+    popContainer.scrollTop = popContainer.scrollHeight
+  },
+
   scheduleMessages(msgContainer, annotations){
     setTimeout(() => {
       let ctime = Player.getCurrentTime()
       let remaining = this.renderAtTime(annotations, ctime, msgContainer)
       this.scheduleMessages(msgContainer, remaining)
+    }, 1000)
+  },
+
+  schedulePopMessages(popContainer, annotations, lastPopAnnotation){
+    setTimeout(() => {
+      let ctime = Player.getCurrentTime()
+      let currentPopArray = annotations.filter( ann => {
+        return ann.at < ctime
+      })
+      let currentPopAnnotation = currentPopArray[currentPopArray.length - 1]
+      if (currentPopAnnotation != null && currentPopAnnotation != lastPopAnnotation) {
+        this.renderPopAnnotation(popContainer, currentPopAnnotation)
+      }
+      this.schedulePopMessages(popContainer, annotations, currentPopAnnotation)
     }, 1000)
   },
 
@@ -73,6 +115,17 @@ let Video = {
         return true
       } else {
         this.renderAnnotation(msgContainer, ann)
+        return false
+      }
+    })
+  },
+
+  renderPopAtTime(annotations, seconds, popContainer){
+    return annotations.filter( ann => {
+      if(ann.at > seconds){
+        return true
+      } else {
+        this.renderPopAnnotation(popContainer, ann)
         return false
       }
     })

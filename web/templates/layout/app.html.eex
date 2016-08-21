@@ -14,19 +14,27 @@
   <body>
     <div class="container">
       <div class="header">
-        <ol class="breadcrumb text-right">
-          <%= if @current_user do %>
-            <li><%= @current_user.username %></li>
-            <li><%= link "My Videos", to: video_path(@conn, :index) %>
-            <li>
-              <%= link "Log out", to: session_path(@conn, :delete, @current_user), method: "delete" %>
-            </li>
-          <% else %>
-            <li><%= link "Register", to: user_path(@conn, :new) %></li>
-            <li><%= link "Log in", to: session_path(@conn, :new) %></li>
-          <% end %>
-        </ol>
-        <!-- <span class="logo"></span> -->
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <%= link "Vocagraphy", to: page_path(@conn, :index), class: "navbar-brand" %>
+            </div>
+            <div class="collapse navbar-collapse" id="vg-navbar-collapse">
+              <ol class="breadcrumb text-right">
+                <%= if @current_user do %>
+                  <li><%= @current_user.username %></li>
+                  <li><%= link "My Videos", to: video_path(@conn, :index) %>
+                    <li>
+                      <%= link "Log out", to: session_path(@conn, :delete, @current_user), method: "delete" %>
+                    </li>
+                <% else %>
+                    <li><%= link "Register", to: user_path(@conn, :new) %></li>
+                    <li><%= link "Log in", to: session_path(@conn, :new) %></li>
+                <% end %>
+              </ol>
+            </div>
+          </div>
+        </nav>
       </div>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>

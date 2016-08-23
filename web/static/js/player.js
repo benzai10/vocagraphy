@@ -18,7 +18,7 @@ let Player = {
       width: "640",
       videoId: playerId,
       playerVars: {
-        autoplay: 0,
+        autoplay: 1,
         start: startAt
       },
       events: {

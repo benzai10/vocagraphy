@@ -42,7 +42,7 @@ form.link, form.button {
 @media (min-width: 768px) {
   .container {
     /* max-width: 730px; */
-    max-width: 1200px;
+    max-width: 1280px;
   }
 }
 .container-narrow > hr {

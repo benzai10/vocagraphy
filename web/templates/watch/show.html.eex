@@ -11,22 +11,42 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-5">
+  <div class="col-sm-5"
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Annotations</h3>
       </div>
       <div id="msg-container" class="panel-body annotations">
       </div>
       <div class="panel-footer">
-        <textarea id="msg-input"
-          rows="3"
+        <h6>Add Annotation</h6>
+        <textarea id="msg-input-front"
+          rows="2"
           class="form-control"
-          placeholder="Comment..."></textarea>
-        <button id="msg-submit" class="btn btn-primary form-control"
-          type="submit">
-          Post
-        </button>
+          placeholder="Front..."></textarea>
+        <textarea id="msg-input-back"
+          rows="2"
+          class="form-control"
+          placeholder="Back..."></textarea>
+        <div class="row">
+          <div class="col-sm-4">
+            <button id="msg-submit" class="btn btn-primary form-control"
+              type="submit">
+              Word
+            </button>
+          </div>
+          <div class="col-sm-4">
+            <button id="msg-expression" class="btn btn-primary form-control"
+              type="submit">
+              Expression
+            </button>
+          </div>
+          <div class="col-sm-4">
+            <button id="msg-request" class="btn btn-primary form-control"
+              type="submit">
+              Request
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

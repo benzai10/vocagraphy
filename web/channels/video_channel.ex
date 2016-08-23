@@ -33,6 +33,9 @@ defmodule Vocagraphy.VideoChannel do
         broadcast! socket, "new_annotation", %{
           id: annotation.id,
           user: Vocagraphy.UserView.render("user.json", %{user: user}),
+          type: annotation.type,
+          front: annotation.front,
+          back: annotation.back,
           body: annotation.body,
           at: annotation.at
         }

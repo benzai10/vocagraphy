@@ -1,7 +1,68 @@
 #msg-container {
-  min-height: 350px;
+  min-height: 345px;
+  max-height: 345px;
+  overflow: scroll;
+  padding: 0;
 }
 
 #pop-container {
   min-height: 100px;
+}
+
+.video-entry {
+  border: 1px solid lightgray;
+  margin-bottom: 7px;
+}
+
+.ann-entry {
+  border: 1px solid lightgray;
+  margin-bottom: 7px;
+}
+
+.ann-title {
+  padding-top: 10px;
+}
+
+.ann-type-W {
+  padding: 6px;
+  font-size: 24px;
+  color: white;
+  background-color: mediumspringgreen;  
+  text-align: center;
+  height: 45px;
+  width: 45px;
+}
+
+.ann-type-E {
+  padding: 6px;
+  font-size: 24px;
+  color: white;
+  background-color: deepskyblue;  
+  text-align: center;
+  height: 45px;
+  width: 45px;
+}
+
+.ann-type-R {
+  padding: 6px;
+  font-size: 24px;
+  color: white;
+  background-color: red;  
+  text-align: center;
+  height: 45px;
+  width: 45px;
+}
+
+.ann-at {
+  font-size: 14px;
+  text-align: center;
+}
+
+.ann-user {
+  font-size: 11px;
+  color: gray;
+}
+
+.ann-body {
+  font-size: 13px;
 }

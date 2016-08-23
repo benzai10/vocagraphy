@@ -4,14 +4,17 @@ defmodule Vocagraphy.Annotation do
   schema "annotations" do
     field :body, :string
     field :at, :integer
+    field :front, :string
+    field :back, :string
+    field :type, :string
     belongs_to :user, Vocagraphy.User
     belongs_to :video, Vocagraphy.Video
 
     timestamps
   end
 
-  @required_fields ~w(body at)
-  @optional_fields ~w()
+  @required_fields ~w(front type at)
+  @optional_fields ~w(body back)
 
   @doc """
   Creates a changeset based on the `model` and `params`.

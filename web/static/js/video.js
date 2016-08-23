@@ -13,17 +13,37 @@ let Video = {
 
   onReady(videoId, socket){
     let msgContainer = document.getElementById("msg-container")
-    let msgInput     = document.getElementById("msg-input")
-    let postButton   = document.getElementById("msg-submit")
+    let msgInput     = document.getElementById("msg-input-front")
+    let msgInputBack = document.getElementById("msg-input-back")
+    let btnWord      = document.getElementById("msg-submit")
+    let btnExp       = document.getElementById("msg-expression")
+    let btnRequest   = document.getElementById("msg-request")
     let vidChannel   = socket.channel("videos:" + videoId)
 
     let popContainer = document.getElementById("pop-container")
 
-    postButton.addEventListener("click", e => {
-      let payload = {body: msgInput.value, at: Player.getCurrentTime()}
+    btnWord.addEventListener("click", e => {
+      let payload = {type: "W", front: msgInput.value, back: msgInputBack.value, at: Player.getCurrentTime()}
       vidChannel.push("new_annotation", payload)
                 .receive("error", e => console.log(e) )
       msgInput.value = ""
+      msgInputBack.value = ""
+    })
+
+    btnExp.addEventListener("click", e => {
+      let payload = {type: "E", front: msgInput.value, back: msgInputBack.value, at: Player.getCurrentTime()}
+      vidChannel.push("new_annotation", payload)
+                .receive("error", e => console.log(e) )
+      msgInput.value = ""
+      msgInputBack.value = ""
+    })
+
+    btnRequest.addEventListener("click", e => {
+      let payload = {type: "R", front: msgInput.value, back: msgInputBack.value, at: Player.getCurrentTime()}
+      vidChannel.push("new_annotation", payload)
+                .receive("error", e => console.log(e) )
+      msgInput.value = ""
+      msgInputBack.value = ""
     })
 
     msgContainer.addEventListener("click", e => {
@@ -60,19 +80,28 @@ let Video = {
       .receive("error", reason => console.log("join failed", reason) )
   },
 
-  renderAnnotation(msgContainer, {user, body, at}){
+  renderAnnotation(msgContainer, {type, user, front, back, at}){
     let template = document.createElement("div")
     template.innerHTML = `
-    <a href="#" data-seek="${this.esc(at)}">
-      [${this.formatTime(at)}]
-      <b>${this.esc(user.username)}</b>: ${this.esc(body)}
-    </a>
+    <div class="media ann-entry">
+      <div class="media-left">
+        <div class="ann-type-${this.esc(type)}">${this.esc(type)}</div>
+        <a href="#" data-seek="${this.esc(at)}">
+          <p class="ann-at">[${this.formatTime(at)}]</p>
+        </a>
+      </div>
+      <div class="media-body">
+        <p class="ann-user">${this.esc(user.username)}</p>
+        <p class="ann-body">${this.esc(front)}</p>
+        <p class="ann-body">${this.esc(back)}</p>
+      </div>
+    </div>
     `
     msgContainer.appendChild(template)
     msgContainer.scrollTop = msgContainer.scrollHeight
   },
 
-  renderPopAnnotation(popContainer, {user, body, at}){
+  renderPopAnnotation(popContainer, {type, user, front, back, at}){
     if (popContainer.hasChildNodes()) {
       popContainer.removeChild(popContainer.childNodes[0])
     }
@@ -80,7 +109,7 @@ let Video = {
     template.innerHTML = `
     <a href="#" data-seek="${this.esc(at)}">
       [${this.formatTime(at)}]
-      <b>${this.esc(user.username)}</b>: ${this.esc(body)}
+      <b>${this.esc(user.username)}</b>: ${this.esc(front)}
     </a>
     `
     popContainer.appendChild(template)

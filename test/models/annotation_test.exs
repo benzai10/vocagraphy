@@ -3,7 +3,7 @@ defmodule Vocagraphy.AnnotationTest do
 
   alias Vocagraphy.Annotation
 
-  @valid_attrs %{at: 42, body: "some content"}
+  @valid_attrs %{type: "W", at: 42, front: "some content"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

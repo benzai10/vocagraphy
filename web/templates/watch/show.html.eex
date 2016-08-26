@@ -5,9 +5,25 @@
     <% end %>
     <div class="panel panel-default">
       <div class="panel-heading">
+        <a href="#" id="timestamp-back">-1s</a>
+        <a href="#" id="timestamp-forward">+1s</a>
         <h3 class="panel-title"><%= @video.title %></h3>
       </div>
       <div id="pop-container" class="panel-body pops">
+      </div>
+      <div id="pop-edit">
+        <input type="text" id="msg-edit-id" class="form-control">
+        <input type="text" id="msg-edit-at" class="form-control">
+        <textarea id="msg-edit-front"
+          rows="2"
+          class="form-control"></textarea>
+        <textarea id="msg-edit-back"
+          rows="2"
+          class="form-control"></textarea>
+        <button id="msg-update" class="btn btn-primary form-control"
+          type="submit">
+          Update
+        </button>
       </div>
     </div>
   </div>

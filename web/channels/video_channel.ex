@@ -45,4 +45,28 @@ defmodule Vocagraphy.VideoChannel do
         {:reply, {:error, %{errors: changeset}}, socket}
     end
   end
+
+  def handle_in("update_annotation", params, socket) do
+    user = Vocagraphy.Repo.get(Vocagraphy.User, socket.assigns.user_id)
+    ann = Vocagraphy.Repo.get!(Vocagraphy.Annotation, params["id"])
+
+    changeset =
+      ann
+      |> Vocagraphy.Annotation.changeset(params)
+
+    case Vocagraphy.Repo.update(changeset)  do
+      {:ok, ann} ->
+        broadcast! socket, "update_annotation", %{
+          id: ann.id,
+          at: ann.at,
+          type: ann.type,
+          user: Vocagraphy.UserView.render("user.json", %{user: user}),
+          front: ann.front,
+          back: ann.back
+        }
+        {:reply, :ok, socket}
+      {:error, changeset} ->
+        {:reply, {:error, %{errors: changeset}}, socket}
+    end
+  end
 end

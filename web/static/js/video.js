@@ -2,6 +2,8 @@ import Player from "./player"
 
 let Video = {
 
+  currentTimestamp: 0,
+
   init(socket, element){ if(!element){ return }
     let playerId = element.getAttribute("data-player-id")
     let videoId  = element.getAttribute("data-id")
@@ -15,12 +17,19 @@ let Video = {
     let msgContainer = document.getElementById("msg-container")
     let msgInput     = document.getElementById("msg-input-front")
     let msgInputBack = document.getElementById("msg-input-back")
+    let msgEditId    = document.getElementById("msg-edit-id")
+    let msgEditAt    = document.getElementById("msg-edit-at")
+    let msgEditFront = document.getElementById("msg-edit-front")
+    let msgEditBack  = document.getElementById("msg-edit-back")
     let btnWord      = document.getElementById("msg-submit")
     let btnExp       = document.getElementById("msg-expression")
     let btnRequest   = document.getElementById("msg-request")
+    let btnUpdate    = document.getElementById("msg-update")
     let vidChannel   = socket.channel("videos:" + videoId)
 
     let popContainer = document.getElementById("pop-container")
+    let tsBack       = document.getElementById("timestamp-back")
+    let tsForward    = document.getElementById("timestamp-forward")
 
     btnWord.addEventListener("click", e => {
       let payload = {type: "W", front: msgInput.value, back: msgInputBack.value, at: Player.getCurrentTime()}
@@ -46,12 +55,24 @@ let Video = {
       msgInputBack.value = ""
     })
 
+    btnUpdate.addEventListener("click", e => {
+      let payload = {
+        id: msgEditId.value,
+        at: msgEditAt.value,
+        front: msgEditFront.value,
+        back: msgEditBack.value
+      }
+       vidChannel.push("update_annotation", payload)
+         .receive("error", e => console.log(e) )
+     })
+
     msgContainer.addEventListener("click", e => {
       e.preventDefault()
       let seconds = e.target.getAttribute("data-seek") ||
                     e.target.parentNode.getAttribute("data-seek")
       if(!seconds){ return }
 
+      this.currentTimestamp = seconds
       Player.seekTo(seconds)
     })
 
@@ -59,12 +80,42 @@ let Video = {
       e.preventDefault()
       let seconds = e.target.getAttribute("data-seek") ||
                     e.target.parentNode.getAttribute("data-seek")
-      if(!seconds){ return }
 
+      let payload = {
+        at: msgEditAt.value,
+        front: msgEditFront.value,
+        back: msgEditBack.value
+      }
+
+      vidChannel.push("update_annotation", payload)
+                .receive("error", e => console.log(e) )
+      if(!payload || !seconds){ return }
+
+      this.currentTimestamp = seconds
       Player.seekTo(seconds)
     })
 
+    tsBack.addEventListener("click", e => {
+      e.preventDefault()
+      this.currentTimestamp = this.currentTimestamp - 1000
+      msgEditAt.value = this.currentTimestamp
+      Player.seekTo(this.currentTimestamp)
+    })
+
+    tsForward.addEventListener("click", e => {
+      e.preventDefault()
+      this.currentTimestamp = this.currentTimestamp + 1000
+      msgEditAt.value = this.currentTimestamp
+      Player.seekTo(this.currentTimestamp)
+    })
+
     vidChannel.on("new_annotation", (resp) => {
+      vidChannel.params.last_seen_id = resp.id
+      this.renderAnnotation(msgContainer, resp)
+      this.renderPopAnnotation(popContainer, resp)
+    })
+
+    vidChannel.on("update_annotation", (resp) => {
       vidChannel.params.last_seen_id = resp.id
       this.renderAnnotation(msgContainer, resp)
       this.renderPopAnnotation(popContainer, resp)
@@ -80,8 +131,14 @@ let Video = {
       .receive("error", reason => console.log("join failed", reason) )
   },
 
-  renderAnnotation(msgContainer, {type, user, front, back, at}){
-    let template = document.createElement("div")
+  renderAnnotation(msgContainer, {id, type, user, front, back, at}){
+    let template = document.getElementById("ann-id-" + id)
+
+    if (!template) {
+      template = document.createElement("div")
+      template.setAttribute("id", "ann-id-" + id)
+    }
+
     template.innerHTML = `
     <div class="media ann-entry">
       <div class="media-left">
@@ -101,7 +158,8 @@ let Video = {
     msgContainer.scrollTop = msgContainer.scrollHeight
   },
 
-  renderPopAnnotation(popContainer, {type, user, front, back, at}){
+  renderPopAnnotation(popContainer, {type, user, front, back, at, id}){
+    this.currentTimestamp = at
     if (popContainer.hasChildNodes()) {
       popContainer.removeChild(popContainer.childNodes[0])
     }
@@ -114,6 +172,16 @@ let Video = {
     `
     popContainer.appendChild(template)
     popContainer.scrollTop = popContainer.scrollHeight
+
+    let msgEditId    = document.getElementById("msg-edit-id")
+    let msgEditAt    = document.getElementById("msg-edit-at")
+    let msgEditFront = document.getElementById("msg-edit-front")
+    let msgEditBack  = document.getElementById("msg-edit-back")
+
+    msgEditId.value = id
+    msgEditAt.value = at
+    msgEditFront.value = front
+    msgEditBack.value = back
   },
 
   scheduleMessages(msgContainer, annotations){

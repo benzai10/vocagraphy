@@ -28,8 +28,11 @@ let Video = {
     let vidChannel   = socket.channel("videos:" + videoId)
 
     let popContainer = document.getElementById("pop-container")
+    let btnEdit      = document.getElementById("btn-pop-edit")
+    let btnEditCancel = document.getElementById("msg-update-cancel")
     let tsBack       = document.getElementById("timestamp-back")
     let tsForward    = document.getElementById("timestamp-forward")
+    let tsRepeat     = document.getElementById("timestamp-repeat")
 
     btnWord.addEventListener("click", e => {
       let payload = {type: "W", front: msgInput.value, back: msgInputBack.value, at: Player.getCurrentTime()}
@@ -64,7 +67,19 @@ let Video = {
       }
        vidChannel.push("update_annotation", payload)
          .receive("error", e => console.log(e) )
-     })
+      document.getElementById("panel-edit-annotation").className += " hidden"
+      document.getElementById("panel-add-annotation").classList.remove("hidden")
+    })
+
+    btnEdit.addEventListener("click", e => {
+      document.getElementById("panel-edit-annotation").classList.remove("hidden")
+      document.getElementById("panel-add-annotation").className += " hidden"
+    })
+
+    btnEditCancel.addEventListener("click", e => {
+      document.getElementById("panel-edit-annotation").className += " hidden"
+      document.getElementById("panel-add-annotation").classList.remove("hidden")
+    })
 
     msgContainer.addEventListener("click", e => {
       e.preventDefault()
@@ -106,6 +121,11 @@ let Video = {
       e.preventDefault()
       this.currentTimestamp = this.currentTimestamp + 1000
       msgEditAt.value = this.currentTimestamp
+      Player.seekTo(this.currentTimestamp)
+    })
+
+    tsRepeat.addEventListener("click", e => {
+      e.preventDefault()
       Player.seekTo(this.currentTimestamp)
     })
 
@@ -165,9 +185,11 @@ let Video = {
     }
     let template = document.createElement("div")
     template.innerHTML = `
-    <a href="#" data-seek="${this.esc(at)}">
-      [${this.formatTime(at)}]
-      <b>${this.esc(user.username)}</b>: ${this.esc(front)}
+      <p class="created-by">
+        ${this.esc(user.username)}
+      </p>
+      <p class="pop-front"><b>${this.esc(front)}</b></p>
+      <p class="pop-back">${this.esc(back)}</p>
     </a>
     `
     popContainer.appendChild(template)

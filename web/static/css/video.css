@@ -1,12 +1,39 @@
+.col-sm-4 {
+  margin: 0;
+  padding: 0;
+}
+
+.col-sm-7 {
+  margin: 0;
+  padding: 0;
+}
+
+iframe {
+  display: block;
+}
+
 #msg-container {
   min-height: 345px;
   max-height: 345px;
   overflow: scroll;
-  padding: 0;
 }
 
 #pop-container {
-  min-height: 100px;
+  margin-top: -8px;
+  min-height: 162px;
+}
+
+.created-by {
+  font-size: 11px;
+  color: darkgrey;
+}
+
+.pop-front {
+  font-size: 30px;
+}
+
+.pop-back {
+  font-size: 14px;
 }
 
 .video-entry {
@@ -65,4 +92,13 @@
 
 .ann-body {
   font-size: 13px;
+}
+
+.panel-default {
+  border-radius: 0;
+}
+
+.col-buttons {
+  padding-left: 15px;
+  padding-right: 15px;
 }

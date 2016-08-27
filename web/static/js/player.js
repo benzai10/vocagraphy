@@ -14,8 +14,8 @@ let Player = {
     let startAtInMillisecs = document.getElementById(domId).dataset.startAt / 1000
     let startAt = startAtInMillisecs.toFixed()
     this.player = new YT.Player(domId, {
-      height: "360",
-      width: "640",
+      height: "384",
+      width: "100%",
       videoId: playerId,
       playerVars: {
         autoplay: 1,

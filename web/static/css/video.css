@@ -1,0 +1,104 @@
+.col-sm-4 {
+  margin: 0;
+  padding: 0;
+}
+
+.col-sm-7 {
+  margin: 0;
+  padding: 0;
+}
+
+iframe {
+  display: block;
+}
+
+#msg-container {
+  min-height: 345px;
+  max-height: 345px;
+  overflow: scroll;
+}
+
+#pop-container {
+  margin-top: -8px;
+  min-height: 162px;
+}
+
+.created-by {
+  font-size: 11px;
+  color: darkgrey;
+}
+
+.pop-front {
+  font-size: 30px;
+}
+
+.pop-back {
+  font-size: 14px;
+}
+
+.video-entry {
+  border: 1px solid lightgray;
+  margin-bottom: 7px;
+}
+
+.ann-entry {
+  border: 1px solid lightgray;
+  margin-bottom: 7px;
+}
+
+.ann-title {
+  padding-top: 10px;
+}
+
+.ann-type-W {
+  padding: 6px;
+  font-size: 24px;
+  color: white;
+  background-color: mediumspringgreen;  
+  text-align: center;
+  height: 45px;
+  width: 45px;
+}
+
+.ann-type-E {
+  padding: 6px;
+  font-size: 24px;
+  color: white;
+  background-color: deepskyblue;  
+  text-align: center;
+  height: 45px;
+  width: 45px;
+}
+
+.ann-type-R {
+  padding: 6px;
+  font-size: 24px;
+  color: white;
+  background-color: red;  
+  text-align: center;
+  height: 45px;
+  width: 45px;
+}
+
+.ann-at {
+  font-size: 14px;
+  text-align: center;
+}
+
+.ann-user {
+  font-size: 11px;
+  color: gray;
+}
+
+.ann-body {
+  font-size: 13px;
+}
+
+.panel-default {
+  border-radius: 0;
+}
+
+.col-buttons {
+  padding-left: 15px;
+  padding-right: 15px;
+}

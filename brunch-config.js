@@ -21,7 +21,10 @@ exports.config = {
       // }
     },
     stylesheets: {
-      joinTo: "css/app.css"
+      joinTo: "css/app.css",
+      order: {
+        after: ["web/static/css/app.css"] // concat app.css last
+      }
     },
     templates: {
       joinTo: "js/app.js"
@@ -52,6 +55,14 @@ exports.config = {
     babel: {
       // Do not use ES6 compiler in vendor code
       ignore: [/web\/static\/vendor/]
+    },
+    sass: {
+      options: {
+        includePaths: [
+          'node_modules/foundation-sites/scss',
+          'node_modules/motion-ui/src'
+        ]
+      }
     }
   },
 
@@ -63,6 +74,10 @@ exports.config = {
 
   npm: {
     enabled: true,
+    globals: {
+      $: 'jquery',
+      jQuery: 'jquery'
+    },
     // Whitelist the npm deps to be pulled in as front-end assets.
     // All other deps in package.json will be excluded from the bundle.
     whitelist: ["phoenix", "phoenix_html"]

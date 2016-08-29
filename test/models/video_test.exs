@@ -3,7 +3,7 @@ defmodule Vocagraphy.VideoTest do
 
   alias Vocagraphy.Video
 
-  @valid_attrs %{description: "some content", title: "some content", url: "some content"}
+  @valid_attrs %{category_id: 1, title: "some content", url: "some content"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

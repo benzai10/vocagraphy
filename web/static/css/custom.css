@@ -17,6 +17,32 @@ form.link, form.button {
   display: inline;
 }
 
+.nav-username {
+  padding: 15px;
+  color: darkgrey;
+}
+
+.nav-form-link {
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.nav-form-link .link {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.nav-form-link a {
+  color: grey;
+}
+
+.nav-form-link a:hover {
+  text-decoration: none;
+  color: black;
+}
+
 /* Custom page header */
 .header {
   border-bottom: 1px solid #e5e5e5;
@@ -35,6 +61,42 @@ form.link, form.button {
 .marketing {
   padding-right: 15px;
   padding-left: 15px;
+}
+
+.thumbnail {
+  border-radius: 0;
+}
+
+.thumbnail-video {
+  min-height: 240px;
+}
+
+.thumbnail-video-link:hover {
+  text-decoration: none;
+}
+
+.page-annotation {
+  color: black;
+  background-color: white;
+}
+
+.page-annotation-link:hover {
+  text-decoration: none;
+}
+
+.ann-card {
+  display: float;
+}
+
+.ann-front {
+  float: left;
+  width: 50%;
+}
+
+.ann-back {
+  float: right;
+  width: 50%;
+  font-size: 12px;
 }
 
 /* Customize container */

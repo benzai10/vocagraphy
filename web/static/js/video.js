@@ -119,6 +119,7 @@ let Video = {
 
     tsForward.addEventListener("click", e => {
       e.preventDefault()
+      console.log(this.currentTimestamp)
       this.currentTimestamp = this.currentTimestamp + 1000
       msgEditAt.value = this.currentTimestamp
       Player.seekTo(this.currentTimestamp)

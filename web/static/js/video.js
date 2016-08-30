@@ -3,6 +3,8 @@ import Player from "./player"
 let Video = {
 
   currentTimestamp: 0,
+  scheduleTimer: 0,
+  timerAnnotations: {},
 
   init(socket, element){ if(!element){ return }
     let playerId = element.getAttribute("data-player-id")
@@ -67,18 +69,24 @@ let Video = {
       }
        vidChannel.push("update_annotation", payload)
          .receive("error", e => console.log(e) )
-      document.getElementById("panel-edit-annotation").className += " hidden"
-      document.getElementById("panel-add-annotation").classList.remove("hidden")
+      document.getElementById("pop-edit").className += " hidden"
+      document.getElementById("pop-container").classList.remove("hidden")
+      this.timerAnnotations.forEach( ann => {
+        if (ann.id == payload.id) { ann.at = payload.at }
+      })
+      this.schedulePopMessages(popContainer, this.timerAnnotations, null)
     })
 
     btnEdit.addEventListener("click", e => {
-      document.getElementById("panel-edit-annotation").classList.remove("hidden")
-      document.getElementById("panel-add-annotation").className += " hidden"
+      clearTimeout(this.scheduleTimer)
+      document.getElementById("pop-edit").classList.remove("hidden")
+      document.getElementById("pop-container").className += " hidden"
     })
 
     btnEditCancel.addEventListener("click", e => {
-      document.getElementById("panel-edit-annotation").className += " hidden"
-      document.getElementById("panel-add-annotation").classList.remove("hidden")
+      document.getElementById("pop-edit").className += " hidden"
+      document.getElementById("pop-container").classList.remove("hidden")
+      this.schedulePopMessages(popContainer, this.timerAnnotations, null)
     })
 
     msgContainer.addEventListener("click", e => {
@@ -112,17 +120,14 @@ let Video = {
 
     tsBack.addEventListener("click", e => {
       e.preventDefault()
-      this.currentTimestamp = this.currentTimestamp - 1000
-      msgEditAt.value = this.currentTimestamp
-      Player.seekTo(this.currentTimestamp)
+      msgEditAt.value -= 1000
+      Player.seekTo(msgEditAt.value)
     })
 
     tsForward.addEventListener("click", e => {
       e.preventDefault()
-      console.log(this.currentTimestamp)
-      this.currentTimestamp = this.currentTimestamp + 1000
-      msgEditAt.value = this.currentTimestamp
-      Player.seekTo(this.currentTimestamp)
+      msgEditAt.value -= -1000
+      Player.seekTo(msgEditAt.value)
     })
 
     tsRepeat.addEventListener("click", e => {
@@ -147,6 +152,7 @@ let Video = {
         let ids = resp.annotations.map(ann => ann.id)
         resp.annotations.forEach( ann => this.renderAnnotation(msgContainer, ann) )
         if(ids.length > 0){ vidChannel.params.last_seen_id = Math.max(...ids) }
+        this.timerAnnotations = resp.annotations
         this.schedulePopMessages(popContainer, resp.annotations, null)
       })
       .receive("error", reason => console.log("join failed", reason) )
@@ -200,11 +206,13 @@ let Video = {
     let msgEditAt    = document.getElementById("msg-edit-at")
     let msgEditFront = document.getElementById("msg-edit-front")
     let msgEditBack  = document.getElementById("msg-edit-back")
+    let curTimestamp = document.getElementById("current-timestamp-display")
 
     msgEditId.value = id
     msgEditAt.value = at
     msgEditFront.value = front
     msgEditBack.value = back
+    curTimestamp.innerHTML = this.formatTime(at)
   },
 
   scheduleMessages(msgContainer, annotations){
@@ -216,7 +224,7 @@ let Video = {
   },
 
   schedulePopMessages(popContainer, annotations, lastPopAnnotation){
-    setTimeout(() => {
+    this.scheduleTimer = setTimeout(() => {
       let ctime = Player.getCurrentTime()
       let currentPopArray = annotations.filter( ann => {
         return ann.at < ctime

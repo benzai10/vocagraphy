@@ -5,24 +5,45 @@
     <% end %>
     <div class="panel panel-default">
       <div class="panel-heading">
-        <a href="#" id="timestamp-back">
-          1s earlier
-          <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
-        </a>
-        |
         <a href="#" id="timestamp-repeat">
           <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-        </a>
-        |
-        <a href="#" id="timestamp-forward">
-          <span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
-          1s later
         </a>
         <button class="btn btn-default btn-xs pull-right" id="btn-pop-edit">
           Edit
         </button>
       </div>
       <div id="pop-container" class="panel-body pops">
+      </div>
+      <div id="pop-edit" class="panel-body pops hidden">
+        <input type="text" id="msg-edit-id" class="form-control hidden">
+        <input type="text" id="msg-edit-at" class="form-control hidden">
+        <textarea id="msg-edit-front"
+          rows="1"
+          class="form-control pop-front"></textarea>
+        <br>
+        <textarea id="msg-edit-back"
+          rows="1"
+          class="form-control"></textarea>
+        <br>
+        <a href="#" id="timestamp-back">
+          1s earlier
+          <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
+        </a>
+        <span id="current-timestamp-display">
+        </span>
+        <a href="#" id="timestamp-forward">
+          <span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
+          1s later
+        </a>
+        <span class="pull-right">
+          <button id="msg-update" class="btn btn-primary btn-xs"
+            type="submit">
+            Update
+          </button>
+          <button id="msg-update-cancel" class="btn btn-default btn-xs">
+            Cancel
+          </button>
+        </span>
       </div>
     </div>
   </div>
@@ -66,34 +87,34 @@
           </div>
         </div>
       </div>
-      <div class="panel-footer hidden" id="panel-edit-annotation">
-        <h6>Edit Annotation</h6>
-        <div id="pop-edit">
-          <input type="text" id="msg-edit-id" class="form-control hidden">
-          <input type="text" id="msg-edit-at" class="form-control hidden">
-          <textarea id="msg-edit-front"
-            rows="1"
-            class="form-control"></textarea>
-          <br>
-          <textarea id="msg-edit-back"
-            rows="1"
-            class="form-control"></textarea>
-          <br>
-          <div class="row">
-            <div class="col-sm-6">
-              <button id="msg-update" class="btn btn-primary form-control"
-                type="submit">
-                Update
-              </button>
-            </div>
-            <div class="col-sm-6">
-              <button id="msg-update-cancel" class="btn btn-default form-control">
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- <div class="panel-footer hidden" id="panel-edit-annotation"> -->
+      <!-- <h6>Edit Annotation</h6> -->
+      <!-- <div id="pop-edit"> -->
+      <!-- <input type="text" id="msg-edit-id" class="form-control hidden"> -->
+      <!-- <input type="text" id="msg-edit-at" class="form-control hidden"> -->
+      <!-- <textarea id="msg-edit-front" -->
+      <!-- rows="1" -->
+      <!-- class="form-control"></textarea> -->
+      <!-- <br> -->
+      <!-- <textarea id="msg-edit-back" -->
+      <!-- rows="1" -->
+      <!-- class="form-control"></textarea> -->
+      <!-- <br> -->
+      <!-- <div class="row"> -->
+      <!-- <div class="col-sm-6"> -->
+      <!-- <button id="msg-update" class="btn btn-primary form-control" -->
+      <!-- type="submit"> -->
+      <!-- Update -->
+      <!-- </button> -->
+      <!-- </div> -->
+      <!-- <div class="col-sm-6"> -->
+      <!-- <button id="msg-update-cancel" class="btn btn-default form-control"> -->
+      <!-- Cancel -->
+      <!-- </button> -->
+      <!-- </div> -->
+      <!-- </div> -->
+      <!-- </div> -->
+      <!-- </div> -->
     </div>
   </div>
 </div>

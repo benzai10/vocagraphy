@@ -20,7 +20,16 @@ iframe {
 
 #pop-container {
   margin-top: -8px;
-  min-height: 162px;
+  min-height: 190px;
+}
+
+#current-timestamp-display {
+  font-size: 12px;
+  font-color: grey;
+}
+
+#panel-add-annotation {
+  min-height: 224px;
 }
 
 .created-by {

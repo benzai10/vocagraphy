@@ -2,7 +2,7 @@ defmodule Vocagraphy.VideoControllerTest do
   use Vocagraphy.ConnCase
 
   alias Vocagraphy.Video
-  @valid_attrs %{url: "http://youtu.be", title: "vid", cateogry_id: 1}
+  @valid_attrs %{url: "http://youtube.com/watch?v=1234", title: "vid"}
   @invalid_attrs %{title: "invalid"}
 
   setup %{conn: conn} = config do

@@ -14,8 +14,8 @@ defmodule Vocagraphy.Video do
     timestamps
   end
 
-  @required_fields ~w(url title category_id)
-  @optional_fields ~w(description)
+  @required_fields ~w(url title)
+  @optional_fields ~w(category_id description)
 
   @doc """
   Creates a changeset based on the `model` and `params`.

@@ -3,10 +3,12 @@ import Player from "./player"
 let Video = {
 
   currentTimestamp: 0,
+  currentAnnotation: {},
   scheduleTimer: 0,
   timerAnnotations: [],
 
   init(socket, element){ if(!element){ return }
+    console.log(element)
     let playerId = element.getAttribute("data-player-id")
     let videoId  = element.getAttribute("data-id")
     socket.connect()
@@ -73,7 +75,11 @@ let Video = {
       document.getElementById("pop-edit").className += " hidden"
       document.getElementById("pop-container").classList.remove("hidden")
       this.timerAnnotations.forEach( ann => {
-        if (ann.id == payload.id) { ann.at = payload.at }
+        if (ann.id == payload.id) {
+          ann.at = payload.at,
+          ann.front = payload.front,
+          ann.back = payload.back
+        }
       })
       this.schedulePopMessages(popContainer, this.timerAnnotations, null)
     })
@@ -95,18 +101,27 @@ let Video = {
       let payload = {
         id: msgEditId.value
       }
+      this.timerAnnotations.filter( ann => {
+        return ann.id != payload.id
+      })
       vidChannel.push("delete_annotation", payload)
         .receive("error", e => console.log(e) )
     })
 
     msgContainer.addEventListener("click", e => {
       e.preventDefault()
+      clearTimeout(this.displayTimer)
       let seconds = e.target.getAttribute("data-seek") ||
                     e.target.parentNode.getAttribute("data-seek")
       if(!seconds){ return }
 
-      this.currentTimestamp = seconds
+      /* this.currentTimestamp = seconds*/
+      this.currentAnnotation = this.timerAnnotations.filter( ann => {
+        return ann.at == seconds
+      }).pop()
       Player.seekTo(seconds)
+      this.renderPopAnnotation(popContainer, this.currentAnnotation)
+      this.displayCurrentAnnotation(popContainer, this.timerAnnotations)
     })
 
     popContainer.addEventListener("click", e => {
@@ -181,7 +196,8 @@ let Video = {
         resp.annotations.forEach( ann => this.renderAnnotation(msgContainer, ann) )
         if(ids.length > 0){ vidChannel.params.last_seen_id = Math.max(...ids) }
         this.timerAnnotations = resp.annotations
-        this.schedulePopMessages(popContainer, resp.annotations, null)
+        /* this.schedulePopMessages(popContainer, resp.annotations, null)*/
+        this.displayCurrentAnnotation(popContainer, resp.annotations)
       })
       .receive("error", reason => console.log("join failed", reason) )
   },
@@ -211,6 +227,28 @@ let Video = {
     `
     msgContainer.appendChild(template)
     msgContainer.scrollTop = msgContainer.scrollHeight
+  },
+
+  displayCurrentAnnotation(popContainer, annotations) {
+    this.displayTimer = setTimeout(() => {
+      let ctime = Player.getCurrentTime()
+      if (this.currentTimestamp > ctime) {
+        if (popContainer.hasChildNodes()) {
+          popContainer.removeChild(popContainer.childNodes[0])
+          document.getElementById("btn-pop-edit").className += " hidden"
+          document.getElementById("btn-ann-delete").className += " hidden"
+        }
+      }
+      this.currentAnnotation = annotations.filter( ann => {
+        return ann.at < ctime
+      }).pop()
+      if ( !this.currentAnnotation > 0 ) {
+        this.displayCurrentAnnotation(popContainer, annotations)
+      } else {
+        this.renderPopAnnotation(popContainer, this.currentAnnotation)
+        this.displayCurrentAnnotation(popContainer, annotations)
+      }
+    }, 1000)
   },
 
   renderPopAnnotation(popContainer, {type, user, front, back, at, id}){

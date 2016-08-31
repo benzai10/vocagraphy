@@ -8,9 +8,14 @@
         <a href="#" id="timestamp-repeat">
           <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
         </a>
-        <button class="btn btn-default btn-xs pull-right" id="btn-pop-edit">
-          Edit
-        </button>
+        <span class="pull-right">
+          <button class="btn btn-danger btn-xs hidden" id="btn-ann-delete">
+            Delete
+          </button>
+          <button class="btn btn-default btn-xs hidden" id="btn-pop-edit">
+            Edit
+          </button>
+        </span>
       </div>
       <div id="pop-container" class="panel-body pops">
       </div>

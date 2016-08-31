@@ -69,4 +69,13 @@ defmodule Vocagraphy.VideoChannel do
         {:reply, {:error, %{errors: changeset}}, socket}
     end
   end
+
+  def handle_in("delete_annotation", params, socket) do
+    annotation = Vocagraphy.Repo.get!(Vocagraphy.Annotation, params["id"])
+
+    Vocagraphy.Repo.delete!(annotation)
+
+    broadcast! socket, "delete_annotation", %{id: params["id"]}
+    {:reply, :ok, socket}
+  end
 end

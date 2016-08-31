@@ -4,7 +4,7 @@ let Video = {
 
   currentTimestamp: 0,
   scheduleTimer: 0,
-  timerAnnotations: {},
+  timerAnnotations: [],
 
   init(socket, element){ if(!element){ return }
     let playerId = element.getAttribute("data-player-id")
@@ -30,6 +30,7 @@ let Video = {
     let vidChannel   = socket.channel("videos:" + videoId)
 
     let popContainer = document.getElementById("pop-container")
+    let btnDelete    = document.getElementById("btn-ann-delete")
     let btnEdit      = document.getElementById("btn-pop-edit")
     let btnEditCancel = document.getElementById("msg-update-cancel")
     let tsBack       = document.getElementById("timestamp-back")
@@ -67,8 +68,8 @@ let Video = {
         front: msgEditFront.value,
         back: msgEditBack.value
       }
-       vidChannel.push("update_annotation", payload)
-         .receive("error", e => console.log(e) )
+      vidChannel.push("update_annotation", payload)
+        .receive("error", e => console.log(e) )
       document.getElementById("pop-edit").className += " hidden"
       document.getElementById("pop-container").classList.remove("hidden")
       this.timerAnnotations.forEach( ann => {
@@ -87,6 +88,15 @@ let Video = {
       document.getElementById("pop-edit").className += " hidden"
       document.getElementById("pop-container").classList.remove("hidden")
       this.schedulePopMessages(popContainer, this.timerAnnotations, null)
+    })
+
+    btnDelete.addEventListener("click", e => {
+      clearTimeout(this.scheduleTimer)
+      let payload = {
+        id: msgEditId.value
+      }
+      vidChannel.push("delete_annotation", payload)
+        .receive("error", e => console.log(e) )
     })
 
     msgContainer.addEventListener("click", e => {
@@ -137,6 +147,8 @@ let Video = {
 
     vidChannel.on("new_annotation", (resp) => {
       vidChannel.params.last_seen_id = resp.id
+      this.timerAnnotations.push(resp)
+      this.schedulePopMessages(popContainer, this.timerAnnotations, null)
       this.renderAnnotation(msgContainer, resp)
       this.renderPopAnnotation(popContainer, resp)
     })
@@ -145,6 +157,22 @@ let Video = {
       vidChannel.params.last_seen_id = resp.id
       this.renderAnnotation(msgContainer, resp)
       this.renderPopAnnotation(popContainer, resp)
+    })
+
+    vidChannel.on("delete_annotation", (resp) => {
+      console.log(resp.id)
+      this.timerAnnotations = this.timerAnnotations.filter( ann => {
+        return ann.id != resp.id
+      })
+      console.log(this.timerAnnotations)
+      let deletedAnn = document.getElementById("ann-id-" + resp.id)
+      deletedAnn.parentElement.removeChild(deletedAnn)
+      if (popContainer.hasChildNodes()) {
+        popContainer.removeChild(popContainer.childNodes[0])
+        document.getElementById("btn-pop-edit").className += " hidden"
+        document.getElementById("btn-ann-delete").className += " hidden"
+      }
+      this.schedulePopMessages(popContainer, this.timerAnnotations, null)
     })
 
     vidChannel.join()
@@ -189,6 +217,8 @@ let Video = {
     this.currentTimestamp = at
     if (popContainer.hasChildNodes()) {
       popContainer.removeChild(popContainer.childNodes[0])
+      document.getElementById("btn-pop-edit").className += " hidden"
+      document.getElementById("btn-ann-delete").className += " hidden"
     }
     let template = document.createElement("div")
     template.innerHTML = `
@@ -197,10 +227,12 @@ let Video = {
       </p>
       <p class="pop-front"><b>${this.esc(front)}</b></p>
       <p class="pop-back">${this.esc(back)}</p>
-    </a>
     `
     popContainer.appendChild(template)
     popContainer.scrollTop = popContainer.scrollHeight
+
+    document.getElementById("btn-pop-edit").classList.remove("hidden")
+    document.getElementById("btn-ann-delete").classList.remove("hidden")
 
     let msgEditId    = document.getElementById("msg-edit-id")
     let msgEditAt    = document.getElementById("msg-edit-at")

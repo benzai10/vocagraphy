@@ -4,7 +4,9 @@ let Video = {
 
   currentTimestamp: 0,
   currentAnnotation: {},
+  repeatFlag: false,
   scheduleTimer: 0,
+  displayTimer: {},
   timerAnnotations: [],
 
   init(socket, element){ if(!element){ return }
@@ -85,19 +87,21 @@ let Video = {
     })
 
     btnEdit.addEventListener("click", e => {
-      clearTimeout(this.scheduleTimer)
+      clearTimeout(this.displayTimer)
       document.getElementById("pop-edit").classList.remove("hidden")
+      document.getElementById("overlay").classList.remove("hidden")
       document.getElementById("pop-container").className += " hidden"
     })
 
     btnEditCancel.addEventListener("click", e => {
       document.getElementById("pop-edit").className += " hidden"
+      document.getElementById("overlay").className += " hidden"
       document.getElementById("pop-container").classList.remove("hidden")
       this.schedulePopMessages(popContainer, this.timerAnnotations, null)
     })
 
     btnDelete.addEventListener("click", e => {
-      clearTimeout(this.scheduleTimer)
+      clearTimeout(this.displayTimer)
       let payload = {
         id: msgEditId.value
       }
@@ -119,6 +123,7 @@ let Video = {
       this.currentAnnotation = this.timerAnnotations.filter( ann => {
         return ann.at == seconds
       }).pop()
+      this.repeatFlag = true
       Player.seekTo(seconds)
       this.renderPopAnnotation(popContainer, this.currentAnnotation)
       this.displayCurrentAnnotation(popContainer, this.timerAnnotations)
@@ -157,6 +162,7 @@ let Video = {
 
     tsRepeat.addEventListener("click", e => {
       e.preventDefault()
+      this.repeatFlag = true
       Player.seekTo(this.currentTimestamp)
     })
 
@@ -170,12 +176,38 @@ let Video = {
 
     vidChannel.on("update_annotation", (resp) => {
       vidChannel.params.last_seen_id = resp.id
-      this.renderAnnotation(msgContainer, resp)
+
+      // replace the ann in this.timerAnnotations and then sort it again
+      // sort this.timerAnnotations
+      // a.sort( (a,b) => {return (a.at > b.at) ? 1 : ((b.at > a.at) ? -1 : 0);});
+      this.timerAnnotations = this.timerAnnotations.filter( ann => {
+        return ann.id != resp.id
+      })
+      this.timerAnnotations.push(resp)
+      this.timerAnnotations.sort( (a,b) => {return (a.at > b.at) ? 1 : ((b.at > a.at) ? -1 : 0);});
+      let updatedAnn = document.getElementById("ann-id-" + resp.id)
+      updatedAnn.innerHTML =
+        `
+        <div class="media ann-entry">
+          <div class="media-left">
+          <div class="ann-type-${this.esc(resp.type)}">${this.esc(resp.type)}</div>
+          <a href="#" data-seek="${this.esc(resp.at)}">
+          <p class="ann-at">[${this.formatTime(resp.at)}]</p>
+          </a>
+          </div>
+          <div class="media-body">
+          <p class="ann-user">${this.esc(resp.user.username)}</p>
+          <p class="ann-body">${this.esc(resp.front)}</p>
+          <p class="ann-body">${this.esc(resp.back)}</p>
+          </div>
+        </div>
+        `
+
+      /* this.renderAnnotation(msgContainer, resp)*/
       this.renderPopAnnotation(popContainer, resp)
     })
 
     vidChannel.on("delete_annotation", (resp) => {
-      console.log(resp.id)
       this.timerAnnotations = this.timerAnnotations.filter( ann => {
         return ann.id != resp.id
       })
@@ -226,7 +258,6 @@ let Video = {
     </div>
     `
     msgContainer.appendChild(template)
-    msgContainer.scrollTop = msgContainer.scrollHeight
   },
 
   displayCurrentAnnotation(popContainer, annotations) {
@@ -242,8 +273,9 @@ let Video = {
       this.currentAnnotation = annotations.filter( ann => {
         return ann.at < ctime
       }).pop()
-      if ( !this.currentAnnotation > 0 ) {
+      if ( !this.currentAnnotation > 0 || this.repeatFlag == true ) {
         this.displayCurrentAnnotation(popContainer, annotations)
+        this.repeatFlag = false
       } else {
         this.renderPopAnnotation(popContainer, this.currentAnnotation)
         this.displayCurrentAnnotation(popContainer, annotations)
@@ -283,6 +315,11 @@ let Video = {
     msgEditFront.value = front
     msgEditBack.value = back
     curTimestamp.innerHTML = this.formatTime(at)
+
+    /* let msgContainer = document.getElementById("msg-container")*/
+    /* let curListElement = document.getElementById("ann-id-" +*/
+    /* this.currentAnnotation.id)*/
+    /* msgContainer.scrollTop = curListElement.offsetTop - 40*/
   },
 
   scheduleMessages(msgContainer, annotations){

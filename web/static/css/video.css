@@ -23,6 +23,24 @@ iframe {
   min-height: 190px;
 }
 
+#pop-edit {
+  background-color: white;
+  position: relative; 
+  z-index: 101;
+}
+
+#overlay {
+  position:fixed;
+  top:0;
+  left:0;
+  height:100%;
+  width:100%;
+  z-index:100;
+  background-color:#444444;
+  opacity:0.2;
+  filter:alpha(opacity=50);
+}
+
 #current-timestamp-display {
   font-size: 12px;
   font-color: grey;

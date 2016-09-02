@@ -1,13 +1,19 @@
 <div class="page-annotation">
-  <div class="media ann-entry">
-    <div class="media-left">
-      <div class='ann-type-<%= "#{@annotation.type}" %>'><%= @annotation.type %></div>
-      <!-- <p class="ann-at">[${this.formatTime(at)}]</p> -->
+  <div class="row">
+    <div class="col-sm-12">
+      <!-- <span class="ann-user"><%#= @annotation.user.username %></span> -->
     </div>
-    <div class="media-body ann-card">
-      <!-- <p class="ann-user">${this.esc(user.username)}</p> -->
-      <div class="ann-front"><%= @annotation.front %></div>
-      <div class="ann-back"><%= @annotation.back %></div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 ann-front-flashcard">
+      <div class="thumbnail nav-thumbnail-front">
+        <p class="ann-body"><%= @annotation.front %></p>
+      </div>
+    </div>
+    <div class="col-sm-6 ann-front-flashcard">
+      <div class="thumbnail nav-thumbnail-back">
+        <p class="ann-body"><%= @annotation.back %></p>
+      </div>
     </div>
   </div>
 </div>

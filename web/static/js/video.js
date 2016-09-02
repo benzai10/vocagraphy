@@ -27,9 +27,8 @@ let Video = {
     let msgEditAt    = document.getElementById("msg-edit-at")
     let msgEditFront = document.getElementById("msg-edit-front")
     let msgEditBack  = document.getElementById("msg-edit-back")
-    let btnWord      = document.getElementById("msg-submit")
-    let btnExp       = document.getElementById("msg-expression")
-    let btnRequest   = document.getElementById("msg-request")
+    let btnSave      = document.getElementById("msg-submit")
+    let btnCancel    = document.getElementById("msg-cancel")
     let btnUpdate    = document.getElementById("msg-update")
     let vidChannel   = socket.channel("videos:" + videoId)
 
@@ -41,26 +40,15 @@ let Video = {
     let tsForward    = document.getElementById("timestamp-forward")
     let tsRepeat     = document.getElementById("timestamp-repeat")
 
-    btnWord.addEventListener("click", e => {
-      let payload = {type: "W", front: msgInput.value, back: msgInputBack.value, at: Player.getCurrentTime()}
+    btnSave.addEventListener("click", e => {
+      let payload = {front: msgInput.value, back: msgInputBack.value, at: Player.getCurrentTime()}
       vidChannel.push("new_annotation", payload)
                 .receive("error", e => console.log(e) )
       msgInput.value = ""
       msgInputBack.value = ""
     })
 
-    btnExp.addEventListener("click", e => {
-      let payload = {type: "E", front: msgInput.value, back: msgInputBack.value, at: Player.getCurrentTime()}
-      vidChannel.push("new_annotation", payload)
-                .receive("error", e => console.log(e) )
-      msgInput.value = ""
-      msgInputBack.value = ""
-    })
-
-    btnRequest.addEventListener("click", e => {
-      let payload = {type: "R", front: msgInput.value, back: msgInputBack.value, at: Player.getCurrentTime()}
-      vidChannel.push("new_annotation", payload)
-                .receive("error", e => console.log(e) )
+    btnCancel.addEventListener("click", e => {
       msgInput.value = ""
       msgInputBack.value = ""
     })
@@ -188,23 +176,29 @@ let Video = {
       let updatedAnn = document.getElementById("ann-id-" + resp.id)
       updatedAnn.innerHTML =
         `
-        <div class="media ann-entry">
-          <div class="media-left">
-          <div class="ann-type-${this.esc(resp.type)}">${this.esc(resp.type)}</div>
-          <a href="#" data-seek="${this.esc(resp.at)}">
-          <p class="ann-at">[${this.formatTime(resp.at)}]</p>
-          </a>
+        <div class="row ann-flashcards">
+          <div class="col-sm-12">
+            <a href="#" data-seek="${this.esc(resp.at)}">
+              <span class="ann-at">[${this.formatTime(resp.at)}]</span>
+            </a>
+            <span class="ann-user">${this.esc(resp.user.username)}</span>
           </div>
-          <div class="media-body">
-          <p class="ann-user">${this.esc(resp.user.username)}</p>
-          <p class="ann-body">${this.esc(resp.front)}</p>
-          <p class="ann-body">${this.esc(resp.back)}</p>
+          <div class="col-sm-6 ann-flashcard">
+            <div class="thumbnail nav-thumbnail-front">
+              <p class="ann-body">${this.esc(resp.front)}</p>
+            </div>
+          </div>
+          <div class="col-sm-6 ann-flashcard">
+            <div class="thumbnail nav-thumbnail-back">
+              <p class="ann-body">${this.esc(resp.back)}</p>
+            </div>
           </div>
         </div>
         `
 
       /* this.renderAnnotation(msgContainer, resp)*/
       this.renderPopAnnotation(popContainer, resp)
+      document.getElementById("overlay").className += " hidden"
     })
 
     vidChannel.on("delete_annotation", (resp) => {
@@ -234,7 +228,7 @@ let Video = {
       .receive("error", reason => console.log("join failed", reason) )
   },
 
-  renderAnnotation(msgContainer, {id, type, user, front, back, at}){
+  renderAnnotation(msgContainer, {id, user, front, back, at}){
     let template = document.getElementById("ann-id-" + id)
 
     if (!template) {
@@ -243,17 +237,22 @@ let Video = {
     }
 
     template.innerHTML = `
-    <div class="media ann-entry">
-      <div class="media-left">
-        <div class="ann-type-${this.esc(type)}">${this.esc(type)}</div>
+    <div class="row ann-flashcards">
+      <div class="col-sm-12">
         <a href="#" data-seek="${this.esc(at)}">
-          <p class="ann-at">[${this.formatTime(at)}]</p>
+          <span class="ann-at">[${this.formatTime(at)}]</span>
         </a>
+        <span class="ann-user">${this.esc(user.username)}</span>
       </div>
-      <div class="media-body">
-        <p class="ann-user">${this.esc(user.username)}</p>
-        <p class="ann-body">${this.esc(front)}</p>
-        <p class="ann-body">${this.esc(back)}</p>
+      <div class="col-sm-6 ann-flashcard">
+        <div class="thumbnail nav-thumbnail-front">
+          <p class="ann-body">${this.esc(front)}</p>
+        </div>
+      </div>
+      <div class="col-sm-6 ann-flashcard">
+        <div class="thumbnail nav-thumbnail-back">
+          <p class="ann-body">${this.esc(back)}</p>
+        </div>
       </div>
     </div>
     `
@@ -283,7 +282,7 @@ let Video = {
     }, 1000)
   },
 
-  renderPopAnnotation(popContainer, {type, user, front, back, at, id}){
+  renderPopAnnotation(popContainer, {user, front, back, at, id}){
     this.currentTimestamp = at
     if (popContainer.hasChildNodes()) {
       popContainer.removeChild(popContainer.childNodes[0])
@@ -295,8 +294,18 @@ let Video = {
       <p class="created-by">
         ${this.esc(user.username)}
       </p>
-      <p class="pop-front"><b>${this.esc(front)}</b></p>
-      <p class="pop-back">${this.esc(back)}</p>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="thumbnail thumbnail-flashcard">
+            <p class="pop-front"><b>${this.esc(front)}</b></p>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="thumbnail thumbnail-flashcard">
+            <p class="pop-back">${this.esc(back)}</p>
+          </div>
+        </div>
+      </div>
     `
     popContainer.appendChild(template)
     popContainer.scrollTop = popContainer.scrollHeight
@@ -308,12 +317,14 @@ let Video = {
     let msgEditAt    = document.getElementById("msg-edit-at")
     let msgEditFront = document.getElementById("msg-edit-front")
     let msgEditBack  = document.getElementById("msg-edit-back")
+    let msgEditBy    = document.getElementById("edited-by")
     let curTimestamp = document.getElementById("current-timestamp-display")
 
     msgEditId.value = id
     msgEditAt.value = at
     msgEditFront.value = front
     msgEditBack.value = back
+    msgEditBy.innerHTML = `${this.esc(user.username)}`
     curTimestamp.innerHTML = this.formatTime(at)
 
     /* let msgContainer = document.getElementById("msg-container")*/

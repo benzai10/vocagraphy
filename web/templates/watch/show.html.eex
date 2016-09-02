@@ -22,35 +22,45 @@
       <div id="pop-container" class="panel-body pops">
       </div>
       <div id="pop-edit" class="panel-body pops hidden">
-        <input type="text" id="msg-edit-id" class="form-control hidden">
-        <input type="text" id="msg-edit-at" class="form-control hidden">
-        <textarea id="msg-edit-front"
-          rows="1"
-          class="form-control pop-front"></textarea>
-        <br>
-        <textarea id="msg-edit-back"
-          rows="1"
-          class="form-control"></textarea>
-        <br>
-        <a href="#" id="timestamp-back">
-          1s earlier
-          <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
-        </a>
-        <span id="current-timestamp-display">
-        </span>
-        <a href="#" id="timestamp-forward">
-          <span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
-          1s later
-        </a>
-        <span class="pull-right">
-          <button id="msg-update" class="btn btn-primary btn-xs"
-            type="submit">
-            Update
-          </button>
-          <button id="msg-update-cancel" class="btn btn-default btn-xs">
-            Cancel
-          </button>
-        </span>
+        <p id="edited-by">
+        </p>
+        <div class="row">
+          <div class="col-sm-6">
+            <input type="text" id="msg-edit-id" class="form-control hidden">
+            <input type="text" id="msg-edit-at" class="form-control hidden">
+            <textarea id="msg-edit-front"
+              rows="3"
+              class="form-control pop-front"></textarea>
+          </div>
+          <div class="col-sm-6">
+            <textarea id="msg-edit-back"
+              rows="3"
+              class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="row edit-status-row">
+          <div class="col-sm-12">
+            <a href="#" id="timestamp-back">
+              1s earlier
+              <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
+            </a>
+            <span id="current-timestamp-display">
+            </span>
+            <a href="#" id="timestamp-forward">
+              <span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
+              1s later
+            </a>
+            <span class="pull-right">
+              <button id="msg-update" class="btn btn-primary btn-xs"
+                type="submit">
+                Update
+              </button>
+              <button id="msg-update-cancel" class="btn btn-default btn-xs">
+                Cancel
+              </button>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -62,7 +72,7 @@
       <div id="msg-container" class="panel-body annotations">
       </div>
       <div class="panel-footer" id="panel-add-annotation">
-        <h6>Add Annotation</h6>
+        <h6>Add New Flashcard</h6>
         <textarea id="msg-input-front"
           rows="1"
           class="form-control"
@@ -74,54 +84,20 @@
           placeholder="Back..."></textarea>
         <br>
         <div class="row">
-          <div class="col-sm-4 col-buttons">
+          <div class="col-sm-6 col-buttons">
             <button id="msg-submit" class="btn btn-primary form-control"
               type="submit">
-              Word
+              Save Flashcard
             </button>
           </div>
-          <div class="col-sm-4 col-buttons">
-            <button id="msg-expression" class="btn btn-primary form-control"
+          <div class="col-sm-6 col-buttons">
+            <button id="msg-cancel" class="btn btn-default form-control"
               type="submit">
-              Expression
-            </button>
-          </div>
-          <div class="col-sm-4 col-buttons">
-            <button id="msg-request" class="btn btn-primary form-control"
-              type="submit">
-              Request
+              Cancel
             </button>
           </div>
         </div>
       </div>
-      <!-- <div class="panel-footer hidden" id="panel-edit-annotation"> -->
-      <!-- <h6>Edit Annotation</h6> -->
-      <!-- <div id="pop-edit"> -->
-      <!-- <input type="text" id="msg-edit-id" class="form-control hidden"> -->
-      <!-- <input type="text" id="msg-edit-at" class="form-control hidden"> -->
-      <!-- <textarea id="msg-edit-front" -->
-      <!-- rows="1" -->
-      <!-- class="form-control"></textarea> -->
-      <!-- <br> -->
-      <!-- <textarea id="msg-edit-back" -->
-      <!-- rows="1" -->
-      <!-- class="form-control"></textarea> -->
-      <!-- <br> -->
-      <!-- <div class="row"> -->
-      <!-- <div class="col-sm-6"> -->
-      <!-- <button id="msg-update" class="btn btn-primary form-control" -->
-      <!-- type="submit"> -->
-      <!-- Update -->
-      <!-- </button> -->
-      <!-- </div> -->
-      <!-- <div class="col-sm-6"> -->
-      <!-- <button id="msg-update-cancel" class="btn btn-default form-control"> -->
-      <!-- Cancel -->
-      <!-- </button> -->
-      <!-- </div> -->
-      <!-- </div> -->
-      <!-- </div> -->
-      <!-- </div> -->
     </div>
   </div>
 </div>

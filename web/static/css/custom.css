@@ -75,13 +75,24 @@ form.link, form.button {
   text-decoration: none;
 }
 
+.index-flashcards {
+  background-color: gainsboro;
+}
+
 .page-annotation {
+  border: 1px solid grey;
   color: black;
-  background-color: white;
+  background-color: powderblue;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .page-annotation-link:hover {
   text-decoration: none;
+}
+
+.nav-thumbnail-front p {
+  font-weight: 700;
 }
 
 .ann-card {

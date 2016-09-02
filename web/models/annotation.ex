@@ -13,7 +13,7 @@ defmodule Vocagraphy.Annotation do
     timestamps
   end
 
-  @required_fields ~w(front type at)
+  @required_fields ~w(front at)
   @optional_fields ~w(body back)
 
   @doc """

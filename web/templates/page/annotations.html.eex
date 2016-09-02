@@ -1,12 +1,14 @@
 <div class="col-md-5">
-  <h3>Latest Annotations</h3>
-  <%= for annotation <- @annotations do %>
-    <a href="<%= watch_path(Vocagraphy.Endpoint,
-                 :show,
-                 annotation.video_id,
-                 start_at: annotation.at) %>"
-                 class="page-annotation-link">
-      <%= render("annotation.html", annotation: annotation) %>
-    </a>
-  <% end %>
+  <h3>Latest Flashcards</h3>
+  <div class="index-flashcards">
+    <%= for annotation <- @annotations do %>
+      <a href="<%= watch_path(Vocagraphy.Endpoint,
+               :show,
+               annotation.video_id,
+               start_at: annotation.at) %>"
+        class="page-annotation-link">
+        <%= render("annotation.html", annotation: annotation) %>
+      </a>
+    <% end %>
+  </div>
 </div>

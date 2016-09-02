@@ -13,20 +13,56 @@ iframe {
 }
 
 #msg-container {
+  padding-top: 0px;
   min-height: 345px;
   max-height: 345px;
   overflow: scroll;
 }
 
+.ann-flashcards {
+  border: 1px solid grey;
+}
+
+.ann-flashcard {
+  padding: 9px;
+}
+
+.nav-thumbnail-front {
+  border-radius: 5px;
+  min-height: 55px;
+  max-height: 55px;
+  margin-bottom: 0px;
+}
+
+.nav-thumbnail-back {
+  border-radius: 5px;
+  min-height: 55px;
+  max-height: 55px;
+  margin-bottom: 0px;
+}
+
+.nav-thumbnail-back p {
+  font-size: 12px;
+}
+
 #pop-container {
   margin-top: -8px;
-  min-height: 190px;
+  min-height: 216px;
+}
+
+.thumbnail-flashcard {
+  border-radius: 5px;
+  min-height: 130px;
+  margin-bottom: 0px;
+  padding: 10px;
 }
 
 #pop-edit {
   background-color: white;
   position: relative; 
   z-index: 101;
+  min-height: 207px;
+  padding-top: 7px;
 }
 
 #overlay {
@@ -41,16 +77,35 @@ iframe {
   filter:alpha(opacity=50);
 }
 
+#msg-edit-front {
+  min-height: 130px;
+  max-height: 130px;
+}
+
+#msg-edit-back {
+  min-height: 130px;
+  max-height: 130px;
+}
+
 #current-timestamp-display {
   font-size: 12px;
   font-color: grey;
 }
 
+.edit-status-row {
+  padding-top: 8px;
+}
+
 #panel-add-annotation {
-  min-height: 224px;
+  min-height: 250px;
 }
 
 .created-by {
+  font-size: 11px;
+  color: darkgrey;
+}
+
+#edited-by {
   font-size: 11px;
   color: darkgrey;
 }

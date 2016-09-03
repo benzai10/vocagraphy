@@ -2,6 +2,7 @@ import Player from "./player"
 
 let Video = {
 
+  currentUser: 0,
   currentTimestamp: 0,
   currentAnnotation: {},
   repeatFlag: false,
@@ -236,12 +237,14 @@ let Video = {
 
     vidChannel.join()
       .receive("ok", resp => {
+        this.current_user = resp.current_user
         let ids = resp.annotations.map(ann => ann.id)
         resp.annotations.forEach( ann => this.renderAnnotation(msgContainer, ann) )
         if(ids.length > 0){ vidChannel.params.last_seen_id = Math.max(...ids) }
         this.timerAnnotations = resp.annotations
         /* this.schedulePopMessages(popContainer, resp.annotations, null)*/
         this.displayCurrentAnnotation(popContainer, resp.annotations)
+        console.log(this.current_user)
       })
       .receive("error", reason => console.log("join failed", reason) )
   },
@@ -328,8 +331,10 @@ let Video = {
     popContainer.appendChild(template)
     popContainer.scrollTop = popContainer.scrollHeight
 
-    document.getElementById("btn-pop-edit").classList.remove("hidden")
-    document.getElementById("btn-ann-delete").classList.remove("hidden")
+    if (this.current_user == user.id) {
+      document.getElementById("btn-pop-edit").classList.remove("hidden")
+      document.getElementById("btn-ann-delete").classList.remove("hidden")
+    }
 
     let msgEditId    = document.getElementById("msg-edit-id")
     let msgEditAt    = document.getElementById("msg-edit-at")

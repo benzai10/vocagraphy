@@ -16,7 +16,8 @@ defmodule Vocagraphy.VideoChannel do
     )
 
     resp = %{annotations: Phoenix.View.render_many(annotations, AnnotationView,
-                                                   "annotation.json")}
+                "annotation.json"),
+            current_user: socket.assigns.user_id}
     {:ok, resp, assign(socket, :video_id, video_id)}
   end
 
@@ -53,6 +54,7 @@ defmodule Vocagraphy.VideoChannel do
     changeset =
       ann
       |> Vocagraphy.Annotation.changeset(params)
+      # add delete restriction here if user != current_user
 
     case Vocagraphy.Repo.update(changeset)  do
       {:ok, ann} ->
@@ -72,6 +74,7 @@ defmodule Vocagraphy.VideoChannel do
 
   def handle_in("delete_annotation", params, socket) do
     annotation = Vocagraphy.Repo.get!(Vocagraphy.Annotation, params["id"])
+    # add delete restriction here if user != current_user
 
     Vocagraphy.Repo.delete!(annotation)
 

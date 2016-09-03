@@ -102,14 +102,20 @@ let Video = {
 
     btnDelete.addEventListener("click", e => {
       clearTimeout(this.displayTimer)
-      let payload = {
-        id: msgEditId.value
+      let conf = confirm("Are you sure?")
+      if (conf == true) {
+        let payload = {
+          id: msgEditId.value
+        }
+        this.timerAnnotations.filter( ann => {
+          return ann.id != payload.id
+        })
+        vidChannel.push("delete_annotation", payload)
+          .receive("error", e => console.log(e) )
+      } else
+      {
+        return
       }
-      this.timerAnnotations.filter( ann => {
-        return ann.id != payload.id
-      })
-      vidChannel.push("delete_annotation", payload)
-        .receive("error", e => console.log(e) )
     })
 
     msgContainer.addEventListener("click", e => {

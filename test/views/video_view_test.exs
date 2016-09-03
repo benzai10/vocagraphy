@@ -7,7 +7,7 @@ defmodule Vocagraphy.VideoViewTest do
               %Vocagraphy.Video{id: "2", title: "cats", url: "http://youtube.com/watch?v=1234"}]
     content = render_to_string(Vocagraphy.VideoView, "index.html", conn: conn, videos: videos)
 
-    assert String.contains?(content, "Listing videos")
+    assert String.contains?(content, "My Videos")
     for video <- videos do
       assert String.contains?(content, video.title)
     end

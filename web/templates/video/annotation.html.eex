@@ -1,0 +1,19 @@
+<div class="page-annotation">
+  <div class="row">
+    <div class="col-sm-12">
+      <!-- <span class="ann-user"><%#= @annotation.user.username %></span> -->
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 ann-front-flashcard">
+      <div class="thumbnail nav-thumbnail-front">
+        <p class="ann-body"><%= @annotation.front %></p>
+      </div>
+    </div>
+    <div class="col-sm-6 ann-front-flashcard">
+      <div class="thumbnail nav-thumbnail-back">
+        <p class="ann-body"><%= @annotation.back %></p>
+      </div>
+    </div>
+  </div>
+</div>

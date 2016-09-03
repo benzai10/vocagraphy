@@ -21,7 +21,7 @@
           <%= if @current_user do %>
             <ul class="nav navbar-nav">
               <li class="nav-username"><%= @current_user.username %></li>
-              <li><%= link "My Videos", to: video_path(@conn, :index) %></li>
+              <li><%= link "Dashboard", to: video_path(@conn, :index) %></li>
               <li class="nav-form-link"><%= link "Log out", to: session_path(@conn, :delete, @current_user), method: "delete" %></li>
             </ul>
           <% else %>

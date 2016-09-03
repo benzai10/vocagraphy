@@ -1,0 +1,33 @@
+<div class="col-md-7">
+  <h3>
+    My Videos
+    <%= link "Add Video", to: video_path(@conn, :new), class: "btn btn-primary btn-xs" %>
+  </h3>
+  <div class="row">
+    <%= for video <- @videos do %>
+      <div class="col-md-4">
+        <div class="thumbnail thumbnail-video">
+          <img src="http://img.youtube.com/vi/<%="#{Vocagraphy.WatchView.player_id(video)}" %>/0.jpg">
+          <div class="caption">
+            <h5>
+              <%= "#{video.title}" %>
+            </h5>
+            <p><%= video.description %></p>
+
+            <%= link "Watch", to: watch_path(@conn, :show, video, start_at: 0),
+            class: "btn btn-default btn-xs" %>
+
+            <%= link "Edit", to: video_path(@conn, :edit, video),
+            class: "btn btn-default btn-xs" %>
+
+            <%= link "Delete", to: video_path(@conn, :delete, video),
+            method: :delete,
+            data: [confirm: "Are you sure?"],
+            class: "btn btn-danger btn-xs" %>
+
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

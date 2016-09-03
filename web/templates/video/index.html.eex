@@ -1,42 +1,4 @@
-<h2>Listing videos</h2>
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Img</th>
-      <th>Url</th>
-      <th>Title</th>
-      <th>Description</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for video <- @videos do %>
-    <tr>
-      <td><%= video.user_id %></td>
-      <td><img src="http://img.youtube.com/vi/<%="#{Vocagraphy.WatchView.player_id(video)}" %>/0.jpg" height="45" width="60"></td>
-      <td><%= video.url %></td>
-      <td><%= video.title %></td>
-      <td><%= video.description %></td>
-
-      <td class="text-right">
-        <%= link "Watch", to: watch_path(@conn, :show, video, start_at: 0),
-        class: "btn btn-default btn-xs" %>
-
-        <%= link "Edit", to: video_path(@conn, :edit, video),
-        class: "btn btn-default btn-xs" %>
-
-        <%= link "Delete", to: video_path(@conn, :delete, video),
-        method: :delete,
-        data: [confirm: "Are you sure?"],
-        class: "btn btn-danger btn-xs" %>
-      </td>
-
-    </tr>
-<% end %>
-  </tbody>
-</table>
-
-<%= link "New video", to: video_path(@conn, :new) %>
+<div class="row">
+  <%= render "videos.html", conn: @conn, videos: @videos %>
+  <%= render "annotations.html", annotations: @annotations %>
+</div>

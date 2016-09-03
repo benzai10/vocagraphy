@@ -100,6 +100,10 @@ iframe {
   min-height: 250px;
 }
 
+#panel-study-mode {
+  min-height: 250px;
+}
+
 .created-by {
   font-size: 11px;
   color: darkgrey;

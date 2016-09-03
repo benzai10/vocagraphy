@@ -21,6 +21,8 @@ let Video = {
 
   onReady(videoId, socket){
     let msgContainer = document.getElementById("msg-container")
+    let btnStudyMode = document.getElementById("switch-study-mode")
+    let btnWatchMode = document.getElementById("switch-watch-mode")
     let msgInput     = document.getElementById("msg-input-front")
     let msgInputBack = document.getElementById("msg-input-back")
     let msgEditId    = document.getElementById("msg-edit-id")
@@ -28,7 +30,7 @@ let Video = {
     let msgEditFront = document.getElementById("msg-edit-front")
     let msgEditBack  = document.getElementById("msg-edit-back")
     let btnSave      = document.getElementById("msg-submit")
-    let btnCancel    = document.getElementById("msg-cancel")
+    /* let btnCancel    = document.getElementById("msg-cancel")*/
     let btnUpdate    = document.getElementById("msg-update")
     let vidChannel   = socket.channel("videos:" + videoId)
 
@@ -40,6 +42,16 @@ let Video = {
     let tsForward    = document.getElementById("timestamp-forward")
     let tsRepeat     = document.getElementById("timestamp-repeat")
 
+    btnStudyMode.addEventListener("click", e => {
+      document.getElementById("panel-add-annotation").className += " hidden"
+      document.getElementById("panel-study-mode").classList.remove("hidden")
+    })
+
+    btnWatchMode.addEventListener("click", e => {
+      document.getElementById("panel-study-mode").className += " hidden"
+      document.getElementById("panel-add-annotation").classList.remove("hidden")
+    })
+
     btnSave.addEventListener("click", e => {
       let payload = {front: msgInput.value, back: msgInputBack.value, at: Player.getCurrentTime()}
       vidChannel.push("new_annotation", payload)
@@ -48,11 +60,11 @@ let Video = {
       msgInputBack.value = ""
     })
 
-    btnCancel.addEventListener("click", e => {
-      msgInput.value = ""
-      msgInputBack.value = ""
-    })
-
+    /* btnCancel.addEventListener("click", e => {
+     *   msgInput.value = ""
+     *   msgInputBack.value = ""
+     * })
+     */
     btnUpdate.addEventListener("click", e => {
       let payload = {
         id: msgEditId.value,

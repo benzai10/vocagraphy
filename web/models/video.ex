@@ -9,7 +9,7 @@ defmodule Vocagraphy.Video do
     field :slug, :string
     belongs_to :user, Vocagraphy.User
     belongs_to :category, Vocagraphy.Category
-    has_many :annotations, Vocagraphy.Annotation
+    has_many :annotations, Vocagraphy.Annotation, on_delete: :nilify_all
 
     timestamps
   end

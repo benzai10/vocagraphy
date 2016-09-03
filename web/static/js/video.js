@@ -365,7 +365,7 @@ let Video = {
   },
 
   schedulePopMessages(popContainer, annotations, lastPopAnnotation){
-    this.scheduleTimer = setTimeout(() => {
+    this.displayTimer = setTimeout(() => {
       let ctime = Player.getCurrentTime()
       let currentPopArray = annotations.filter( ann => {
         return ann.at < ctime

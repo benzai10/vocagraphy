@@ -17,7 +17,6 @@ iframe {
   min-height: 345px;
   max-height: 345px;
   overflow: scroll;
-  background-color: powderblue;
 }
 
 .ann-flashcards {
@@ -49,7 +48,6 @@ iframe {
 #pop-container {
   margin-top: -8px;
   min-height: 216px;
-  background-color: springgreen;
 }
 
 .thumbnail-flashcard {

@@ -3,7 +3,6 @@ defmodule Vocagraphy.VideoController do
 
   alias Vocagraphy.Video
   alias Vocagraphy.Category
-  alias Vocagraphy.Annotation
 
   plug :scrub_params, "video" when action in [:create, :update]
   plug :load_categories when action in [:new, :create, :edit, :update]
@@ -25,6 +24,8 @@ defmodule Vocagraphy.VideoController do
   def index(conn, _params, user) do
     videos = Repo.all(user_videos(user))
     annotations = Repo.all(user_annotations(user))
+    annotations = Enum.filter(annotations, fn(ann) ->
+      is_nil(ann.video_id) == false end)
     render(conn, "index.html", videos: videos, annotations: annotations)
   end
 

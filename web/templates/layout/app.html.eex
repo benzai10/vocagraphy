@@ -7,15 +7,15 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello Vocagraphy!</title>
+    <title>Flashklip</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <%= link "Vocagraphy", to: page_path(@conn, :index), class: "navbar-brand" %>
+          <%= link "Flashklip", to: page_path(@conn, :index), class: "navbar-brand" %>
         </div>
         <div class="collapse navbar-collapse pull-right" id="vg-navbar-collapse">
           <%= if @current_user do %>

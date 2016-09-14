@@ -5,7 +5,7 @@ body, form, ul, table {
 }
 
 body {
-  background-color: gainsboro;
+  background-color: #111111;
   margin-top: 80px;
 }
 
@@ -40,7 +40,7 @@ form.link, form.button {
 
 .nav-form-link a:hover {
   text-decoration: none;
-  color: black;
+  color: white;
 }
 
 /* Custom page header */
@@ -68,7 +68,7 @@ form.link, form.button {
 }
 
 .thumbnail-video {
-  min-height: 240px;
+  min-height: 260px;
 }
 
 .thumbnail-video-link:hover {
